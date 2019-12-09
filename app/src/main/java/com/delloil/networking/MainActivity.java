@@ -21,14 +21,16 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private String url, urlarray;
 
+    RequestQueue singletonRequestQueue; // singleton
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        requestQueue = Volley.newRequestQueue(this);
+       // requestQueue = Volley.newRequestQueue(this);  non singleton method call
         url ="https://jsonplaceholder.typicode.com/todos/1";
         urlarray ="https://jsonplaceholder.typicode.com/todos";
-
+        singletonRequestQueue = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue(); //singleton
 
 
         /*
@@ -62,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
                      public void onErrorResponse(VolleyError error) { }
         });
 
-       requestQueue.add(jsonObjectRequest);
+//       requestQueue.add(jsonObjectRequest); non singleton
+
+       singletonRequestQueue.add(jsonObjectRequest); // singleton
 
             /*
 
@@ -101,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {  Log.d("JSOSN","Array error " );}
                 });
 
-        requestQueue.add(jsonArrayRequest);
-
+//        requestQueue.add(jsonArrayRequest); non singleton
+        singletonRequestQueue.add(jsonArrayRequest); //singleton
     }
 
 
