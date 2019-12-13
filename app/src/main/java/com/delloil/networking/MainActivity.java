@@ -20,7 +20,8 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private String url, urlarray;
-
+    JsonObjectRequest createdReq;
+    JsonArrayRequest createdArrayReq;
     RequestQueue singletonRequestQueue; // singleton
 
     @Override
@@ -31,9 +32,20 @@ public class MainActivity extends AppCompatActivity {
         url ="https://jsonplaceholder.typicode.com/todos/1";
         urlarray ="https://jsonplaceholder.typicode.com/todos";
         singletonRequestQueue = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue(); //singleton
+        createdReq = createObjectReq();
+        createdArrayReq = createArrayReq();
 
 
-        /*
+       singletonRequestQueue.add(createdReq); // singleton
+        singletonRequestQueue.add(createdArrayReq); //singleton
+//       requestQueue.add(jsonObjectRequest); non singleton
+//        requestQueue.add(jsonArrayRequest); non singleton
+
+    }
+
+    private JsonObjectRequest createObjectReq(){
+
+         /*
 
         public JsonObjectRequest(
             int method,
@@ -53,22 +65,21 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("JSOSN","response "+ response);
 
                         try {
-                            Log.d("JSOSN","responsefield "+ response.getString("title"));
+                            Log.d("JSOSN","responsefieldinmethod "+ response.getString("title"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 },
                 new Response.ErrorListener() {
-                      @Override
-                     public void onErrorResponse(VolleyError error) { }
-        });
+                    @Override
+                    public void onErrorResponse(VolleyError error) { }
+                });
+        return jsonObjectRequest;
+    }
 
-//       requestQueue.add(jsonObjectRequest); non singleton
-
-       singletonRequestQueue.add(jsonObjectRequest); // singleton
-
-            /*
+    private JsonArrayRequest createArrayReq(){
+                 /*
 
                 public JsonArrayRequest(
             int method,
@@ -85,14 +96,14 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("JSOSN","Array response "+ response);
+                        Log.d("JSOSN","Array response method "+ response);
 
                         for (int i=0; i<response.length();i++){
 
                             try {
 
                                 JSONObject eachEntryObject = response.getJSONObject(i);
-                                Log.d("JSOSN","Array response inside "+ eachEntryObject.getString("title"));
+                                Log.d("JSOSN","Array response inside method"+ eachEntryObject.getString("title"));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -102,14 +113,8 @@ public class MainActivity extends AppCompatActivity {
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {  Log.d("JSOSN","Array error " );}
+                    public void onErrorResponse(VolleyError error) {  Log.d("JSOSN","Array error method " );}
                 });
-
-//        requestQueue.add(jsonArrayRequest); non singleton
-        singletonRequestQueue.add(jsonArrayRequest); //singleton
+        return jsonArrayRequest;
     }
-
-
-
-
 }
